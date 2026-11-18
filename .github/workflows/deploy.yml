@@ -1,0 +1,35 @@
+
+name: Publicar Visitas Livre
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar arquivos
+        uses: actions/checkout@v4
+
+      - name: Extrair aplicativo
+        run: |
+          mkdir site
+          unzip Visitas_Livre_Compartilhar_V1_0.zip -d site
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Preparar publicação
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publicar
+        uses: actions/deploy-pages@v4
